@@ -1,5 +1,6 @@
 const { hash, compare } = require("bcrypt")
 const AppError = require("../utils/AppError")
+const knex = require("../database/knex");
 
 const sqliteConnection = require("../database/sqlite")
 
@@ -67,6 +68,15 @@ class UserController{
 
     return response.status(200).json();
 
+  }
+
+  async show(request, response){
+    const {id} = request.params;
+    const user = await knex("users").where({id}).first();
+
+    return response.json({
+      user,
+    });
   }
 }
 
